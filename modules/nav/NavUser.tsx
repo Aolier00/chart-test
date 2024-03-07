@@ -1,5 +1,6 @@
 import { Logo } from "@/icons";
 import React from "react";
+import User from "./User";
 
 type Props = {
   name: string;
@@ -11,7 +12,7 @@ export default function NavUser({ name }: Props) {
       <div className="w-fit">
         <Logo />
       </div>
-      <div>{name}</div>
+      <User />
     </nav>
   );
 }

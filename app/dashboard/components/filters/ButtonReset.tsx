@@ -1,14 +1,21 @@
+"use client";
 import Reset from "@/icons/Reset";
 import React from "react";
+import Button from "./Button";
 
 const ButtonReset = () => {
+  const handle = (): void => {
+    console.log("clicked");
+  };
   return (
-    <button className="flex md:gap-4 lg:gap-4 h-[70px] justify-center items-center w-1/3">
-      <Reset></Reset>
-      <span className="text-sm font-semibold text-[#EA0234]">
-        Resetear filtro
-      </span>
-    </button>
+    <div className="w-1/3">
+      <Button style="" handleClick={() => handle()}>
+        <Reset></Reset>
+        <span className="text-sm font-semibold text-[#EA0234]">
+          Resetear filtro
+        </span>
+      </Button>
+    </div>
   );
 };
 

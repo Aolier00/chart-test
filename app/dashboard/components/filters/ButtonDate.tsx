@@ -1,11 +1,25 @@
-import { IconDropdown } from "@/icons";
+"use client";
+import { IconDropdownClose } from "@/icons";
+import Button from "./Button";
+import { Calendar } from "react-multi-date-picker";
+import { Layout } from "@/modules/dropdwon";
+import { useState } from "react";
+import { UseClickOutside } from "@/logic";
 
 const ButtonDate = () => {
+  const [open, setOpen] = useState<boolean>(false);
+  const { inputRef } = UseClickOutside({ setClick: setOpen });
+
   return (
-    <button className="flex md:gap-4 lg:gap-4 h-[70px] justify-center items-center w-1/3 border-r">
-      <span className="text-sm font-semibold">04 Marzo 2024</span>
-      <IconDropdown />
-    </button>
+    <div className="w-1/3 space-y-2" ref={inputRef}>
+      <Button style="border-r" handleClick={() => setOpen((prev) => !prev)}>
+        <span className="text-sm font-semibold">04 Marzo 2024</span>
+        <IconDropdownClose bg="black" width={12} height={8} />
+      </Button>
+      <Layout open={open}>
+        <Calendar range></Calendar>
+      </Layout>
+    </div>
   );
 };
 

@@ -1,17 +1,23 @@
 import React from "react";
 
-const Close = () => {
+type Props = {
+  width: number;
+  height: number;
+  bg: string;
+};
+
+const Close = ({ width, height, bg }: Props) => {
   return (
     <svg
-      width="24"
-      height="25"
-      viewBox="0 0 24 25"
+      width={width}
+      height={height}
+      viewBox="0 0 12 9"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M7.415 8.71L12 13.295L16.585 8.71L18 10.125L12 16.125L6 10.125L7.415 8.71Z"
-        fill="black"
+        d="M1.415 0.709999L6 5.295L10.585 0.709999L12 2.125L6 8.125L0 2.125L1.415 0.709999Z"
+        fill={bg}
       />
     </svg>
   );
