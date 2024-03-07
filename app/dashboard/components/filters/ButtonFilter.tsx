@@ -14,7 +14,7 @@ const ButtonFilter = () => {
     <div className="w-1/3 space-y-2" ref={inputRef}>
       <Button style="border-r" handleClick={() => setOpen((prev) => !prev)}>
         <Filter />
-        <span className="text-sm font-semibold">Filtros</span>
+        <span className="hidden md:block lg:block text-sm font-semibold">Filtros</span>
       </Button>
       <DropdownCheck open={open} data={dataOptions} setData={setDataOptions} />
     </div>

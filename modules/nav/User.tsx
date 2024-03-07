@@ -13,11 +13,14 @@ const User = () => {
         <span className="font-normal text-xs text-white">JL</span>
       </div>
       <div className="flex gap-6 items-center">
-        <div>
+        <div className="hidden lg:block xl:block md:block">
           <h4 className="text[#404040] text-sm font-bold">John Doe</h4>
           <p className="text-[#565656] text-xs font-semibold">Admin</p>
         </div>
-        <div className="space-y-11 flex justify-center" ref={inputRef}>
+        <div
+          className="space-y-11 flex justify-end md:justify-center lg:justify-center xl:justify-center"
+          ref={inputRef}
+        >
           <button
             className="border-[0.2px] border-[#5C5C5C] rounded-full w-[18px] h-[18px] grid place-content-center"
             onClick={() => setOpen((prev) => !prev)}
@@ -29,6 +32,10 @@ const User = () => {
             ></IconDropdownClose>
           </button>
           <Layout open={open}>
+            <div className="px-4 py-2 border-b block md:hidden lg:hidden xl:hidden">
+              <h4 className="text[#404040] text-sm font-bold">John Doe</h4>
+              <p className="text-[#565656] text-xs font-semibold">Admin</p>
+            </div>
             <ul
               className="overflow-auto text-sm text-gray-700 "
               aria-labelledby="dropdownDividerButton"

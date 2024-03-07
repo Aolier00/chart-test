@@ -11,7 +11,7 @@ const ButtonReset = () => {
     <div className="w-1/3">
       <Button style="" handleClick={() => handle()}>
         <Reset></Reset>
-        <span className="text-sm font-semibold text-[#EA0234]">
+        <span className="hidden md:block lg:block text-sm font-semibold text-[#EA0234]">
           Resetear filtro
         </span>
       </Button>
