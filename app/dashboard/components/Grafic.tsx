@@ -2,41 +2,47 @@
 import React, { useEffect, useRef, useState } from "react";
 import CardWhite from "@/modules/card/CardWhite";
 import Chart from "chart.js/auto";
+import { Cart, CartsByMonth } from "@/domains/Cart";
+import { useFetchData } from "@/logic";
+import { formatData, formatDate } from "@/logic/utils/data";
+import { InterfaceChart } from "@/domains/Chart";
 
 const Grafic = () => {
+  //carts
+  const {
+    data: dataCart,
+    error: errorCart,
+    isLoading: loadingCart,
+  } = useFetchData<Cart[], any>("https://fakestoreapi.com/carts");
+
+  const data: CartsByMonth[] = formatData(dataCart);
   const [chartInstance, setChartInstance] = useState<Chart<"line"> | null>(
     null
   );
-  const chartData = {
-    labels: [
-      "Ene",
-      "Feb",
-      "Mar",
-      "Abr",
-      "May",
-      "Jun",
-      "Jul",
-      "Ago",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dic",
-    ],
-    datasets: [
-      {
-        label: "Temperatura Promedio (°C)",
-        data: [2, 3, 6, 10, 15, 20, 23, 22, 18, 12, 7, 3],
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-        fill: true,
-      },
-    ],
-  };
+  const [chartData, setChartData] = useState<InterfaceChart | null>(null);
+
+  useEffect(() => {
+    if (!dataCart && !data) return;
+    const chartData = {
+      labels: data.map((item) => formatDate(item.date)),
+      datasets: [
+        {
+          label: "Number of sales",
+          data: data.map((item) => item.carts.length),
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+          fill: true,
+        },
+      ],
+    };
+    setChartData(chartData);
+    localStorage.setItem("grafic-data", JSON.stringify(dataCart));
+  }, [dataCart]);
   const chartRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (!chartRef || !chartRef.current) return;
+    if ((chartData && !chartRef) || !chartRef.current) return;
 
     if (chartInstance) {
       chartInstance.destroy();
@@ -49,11 +55,6 @@ const Grafic = () => {
       options: {
         responsive: true,
         aspectRatio: 0,
-        // scales: {
-        //   y: {
-        //     beginAtZero: true,
-        //   },
-        // },
       },
     });
     setChartInstance(newChartInstance);
@@ -62,16 +63,17 @@ const Grafic = () => {
         newChartInstance.destroy();
       }
     };
-  }, []);
+  }, [chartData]);
 
   return (
-    <CardWhite title="Ganancias">
+    <CardWhite title="Sales">
       <div
         style={{
           width: "100%",
         }}
       >
-        <canvas ref={chartRef} />
+        {loadingCart && <p>Loading ...</p>}
+        {dataCart && <canvas ref={chartRef} />}
       </div>
     </CardWhite>
   );

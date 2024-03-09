@@ -5,7 +5,7 @@ import { Layout } from "../dropdwon";
 import { UseClickOutside } from "@/logic";
 
 const User = () => {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const { inputRef } = UseClickOutside({ setClick: setOpen });
   return (
     <div className="flex gap-4">

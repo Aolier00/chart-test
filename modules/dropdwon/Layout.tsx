@@ -9,7 +9,7 @@ const Layout = ({ children, open }: Props) => {
   return (
     <div
       className={`${
-        open ? "bg-white rounded-lg shadow-lg absolute bottom-auto top- z-50 overflow-auto" : "hidden"
+        open ? "bg-white rounded-lg shadow-lg absolute bottom-auto top- z-10" : "hidden"
       }`}
     >
       {children}

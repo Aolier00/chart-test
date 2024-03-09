@@ -13,7 +13,7 @@ const ButtonDate = () => {
   return (
     <div className="w-1/3 space-y-2" ref={inputRef}>
       <Button style="border-r" handleClick={() => setOpen((prev) => !prev)}>
-        <span className="text-sm font-semibold">04 Marzo 2024</span>
+        <span className="text-sm font-semibold">04 March 2024</span>
         <IconDropdownClose bg="black" width={12} height={8} />
       </Button>
       <Layout open={open}>
