@@ -28,7 +28,6 @@ const Table = () => {
   useEffect(() => {
     if (!dataProducts) return;
     setDataCategory(dataCategories(dataProducts));
-    localStorage.setItem("data-products", JSON.stringify(dataProducts));
   }, [dataProducts]);
 
   return (

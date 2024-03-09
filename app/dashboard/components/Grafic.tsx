@@ -25,11 +25,12 @@ const Grafic = () => {
   const { selectCategory } = useContext(
     DashboardContext
   ) as DashboardContextType;
-  
+
   useEffect(() => {
     if (!dataProducts) return;
     const data = cantProductForCategory(
-      selectCategory ? selectCategory.value : ''
+      selectCategory ? selectCategory.value : '',
+      dataProducts
     );
     const chartData = {
       labels: data.map((item) => item.category),
