@@ -1,9 +1,7 @@
 import React from "react";
 import Home from "./dashboard/Dashboard";
 
-type Props = {};
-
-const page = (props: Props) => {
+const Page = () => {
   return (
     <div>
       <Home></Home>
@@ -11,4 +9,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
