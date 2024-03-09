@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-  basePath: '/docs',
+  reactStrictMode: true,
+  swcMinify: true,
 };
-
 export default nextConfig;
