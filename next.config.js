@@ -7,4 +7,4 @@ const nextConfig = {
   // subdomain: 'app',
 };
 
-export default nextConfig;
+module.exports = nextConfig
