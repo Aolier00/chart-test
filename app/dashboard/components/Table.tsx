@@ -1,7 +1,7 @@
 "use client";
 import { Product } from "@/domains/Product";
 import { useFetchData } from "@/logic";
-import { dataCategories } from "@/logic/utils/data";
+import { cantProductForCategory, dataCategories } from "@/logic/utils/data";
 import CardWhite from "@/modules/card/CardWhite";
 import React, { useContext, useEffect } from "react";
 import {
@@ -28,7 +28,7 @@ const Table = () => {
   useEffect(() => {
     if (!dataProducts) return;
     setDataCategory(dataCategories(dataProducts));
-    localStorage.setItem("productList", JSON.stringify(dataProducts));
+    localStorage.setItem("data-products", JSON.stringify(dataProducts));
   }, [dataProducts]);
 
   return (
@@ -53,7 +53,7 @@ const Table = () => {
               <tr className="bg-white border-b" key={item.id}>
                 <th
                   scope="row"
-                  className="w-3/12 truncate px-6 py-4 font-normal whitespace-normal"
+                  className="w-3/12 truncate px-6 py-4 font-normal whitespace-normal "
                 >
                   {item.title}
                 </th>

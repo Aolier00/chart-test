@@ -1,6 +1,17 @@
 import { Cart, CartsByMonth } from "@/domains/Cart";
+import { CartComplete } from "@/domains/CartComplete";
 import { DropdownInterface } from "@/domains/Dropdown";
 import { Product } from "@/domains/Product";
+
+const cartsComplete: CartComplete[] = [];
+const carts_localStorage = localStorage.getItem("data-carts");
+const dataCarts: Cart[] = carts_localStorage
+  ? JSON.parse(carts_localStorage)
+  : [];
+const products_localStorage = localStorage.getItem("data-products");
+const dataProducts: Product[] = products_localStorage
+  ? JSON.parse(products_localStorage)
+  : [];
 
 //Cantidad de productos vendidos por mes
 export const formatData = (carts: Cart[] | null): CartsByMonth[] => {
@@ -36,7 +47,7 @@ export const dataCategories = (
       dataCategory.push({
         id: index.toString(),
         name: product.category,
-        value: product.title,
+        value: product.category,
         checked: false,
       });
     }
@@ -53,4 +64,53 @@ export const formatDate = (date: string): string => {
     month: "short",
     day: "numeric",
   });
+};
+
+const findProduct = (
+  dataProducts: Product[],
+  idProduct: string
+): Product | undefined =>
+  dataProducts.find((product) => product.id.toString() == idProduct);
+
+//format data complete
+export const formatDataComplete = (): CartComplete[] => {
+  dataCarts?.forEach((cart) => {
+    let products: Product[] = [];
+    cart.products.filter((item) => {
+      const product: Product | undefined = findProduct(
+        dataProducts,
+        item.productId.toString()
+      );
+      if (product) {
+        products.push(product);
+      }
+    });
+    cartsComplete.push({ ...cart, products: products });
+  });
+
+  return cartsComplete;
+};
+
+//Cantidad de producto por categoria
+export const cantProductForCategory = (
+  category: string
+): {
+  category: string;
+  quantity: number;
+}[] => {
+  const data = dataCategories(dataProducts)?.map((item) => {
+    let cont: number = 0;
+    dataProducts?.filter((product) => {
+      if (item.value == product.category) {
+        cont += product.rating.count;
+      }
+    });
+    return { category: item.value, quantity: cont };
+  });
+  return category
+    ? [
+        { category: "0", quantity: 0 },
+        ...data.filter((item) => item.category == category),
+      ]
+    : data;
 };

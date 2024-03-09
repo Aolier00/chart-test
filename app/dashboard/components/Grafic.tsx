@@ -1,34 +1,42 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import CardWhite from "@/modules/card/CardWhite";
 import Chart from "chart.js/auto";
-import { Cart, CartsByMonth } from "@/domains/Cart";
 import { useFetchData } from "@/logic";
-import { formatData, formatDate } from "@/logic/utils/data";
+import { cantProductForCategory } from "@/logic/utils/data";
 import { InterfaceChart } from "@/domains/Chart";
+import { Product } from "@/domains/Product";
+import {
+  DashboardContext,
+  DashboardContextType,
+} from "../context/DashboardContext";
 
 const Grafic = () => {
-  //carts
   const {
-    data: dataCart,
-    error: errorCart,
-    isLoading: loadingCart,
-  } = useFetchData<Cart[], any>("https://fakestoreapi.com/carts");
+    data: dataProducts,
+    // error: errorProduct,
+    isLoading: loadingProduct,
+  } = useFetchData<Product[], any>("https://fakestoreapi.com/products");
 
-  const data: CartsByMonth[] = formatData(dataCart);
   const [chartInstance, setChartInstance] = useState<Chart<"line"> | null>(
     null
   );
   const [chartData, setChartData] = useState<InterfaceChart | null>(null);
-
+  const { selectCategory } = useContext(
+    DashboardContext
+  ) as DashboardContextType;
+  
   useEffect(() => {
-    if (!dataCart && !data) return;
+    if (!dataProducts) return;
+    const data = cantProductForCategory(
+      selectCategory ? selectCategory.value : ''
+    );
     const chartData = {
-      labels: data.map((item) => formatDate(item.date)),
+      labels: data.map((item) => item.category),
       datasets: [
         {
-          label: "Number of sales",
-          data: data.map((item) => item.carts.length),
+          label: "Product Quantity",
+          data: data.map((item) => item.quantity),
           backgroundColor: "rgba(75, 192, 192, 0.2)",
           borderColor: "rgba(75, 192, 192, 1)",
           borderWidth: 1,
@@ -37,8 +45,8 @@ const Grafic = () => {
       ],
     };
     setChartData(chartData);
-    localStorage.setItem("grafic-data", JSON.stringify(dataCart));
-  }, [dataCart]);
+  }, [dataProducts, selectCategory]);
+
   const chartRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -66,14 +74,14 @@ const Grafic = () => {
   }, [chartData]);
 
   return (
-    <CardWhite title="Sales">
+    <CardWhite title="Product of Quantity">
       <div
         style={{
           width: "100%",
         }}
       >
-        {loadingCart && <p>Loading ...</p>}
-        {dataCart && <canvas ref={chartRef} />}
+        {loadingProduct && <p>Loading ...</p>}
+        {dataProducts && <canvas ref={chartRef} />}
       </div>
     </CardWhite>
   );

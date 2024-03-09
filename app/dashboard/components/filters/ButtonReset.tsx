@@ -1,15 +1,16 @@
 "use client";
 import Reset from "@/icons/Reset";
-import React from "react";
+import React, { useContext } from "react";
 import Button from "./Button";
+import { DashboardContext, DashboardContextType } from "../../context/DashboardContext";
 
 const ButtonReset = () => {
-  const handle = (): void => {
-    console.log("clicked");
-  };
+  const { setSelectCategory, selectCategory } = useContext(
+    DashboardContext
+  ) as DashboardContextType;
   return (
     <div className="w-1/3">
-      <Button style="" handleClick={() => handle()}>
+      <Button style="" handleClick={() => setSelectCategory(null)} disabled={selectCategory == null}>
         <Reset></Reset>
         <span className="hidden md:block lg:block text-sm font-semibold text-[#EA0234]">
           Reset filters
