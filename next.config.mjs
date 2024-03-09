@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  // start aplication in a subdomain before localhost
-  // subdomain: 'app',
+  basePath: '/docs',
 };
 
 export default nextConfig;
