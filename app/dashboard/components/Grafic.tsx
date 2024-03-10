@@ -25,12 +25,12 @@ const Grafic = () => {
       <div
         style={{
           width: "100%",
-          height: 250,
+          height: data ? 250 : '',
         }}
       >
         {isLoading && (
           <div className="animate-pulse flex">
-            <div className="shadow bg-neutral-200 h-28 rounded-md w-full"></div>
+            <div className="shadow bg-gray-200 h-28 rounded-md w-full"></div>
           </div>
         )}
         {data && <canvas ref={chartRef} />}
