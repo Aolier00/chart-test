@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Filter from "@/icons/IconFilter";
 import Button from "./Button";
-import { DropdownCheck } from "@/modules/dropdwon";
+import { BoxDropdown } from "@/modules/dropdwon";
 import { UseClickOutside } from "@/logic";
+
 const ButtonFilter = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { inputRef } = UseClickOutside({ setClick: setOpen });
@@ -15,7 +16,7 @@ const ButtonFilter = () => {
           Filters
         </span>
       </Button>
-      <DropdownCheck open={open} />
+      <BoxDropdown open={open} />
     </div>
   );
 };

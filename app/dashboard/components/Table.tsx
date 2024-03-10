@@ -1,7 +1,7 @@
 "use client";
 import { Product } from "@/domains/Product";
 import { useFetchData } from "@/logic";
-import { cantProductForCategory, dataCategories } from "@/logic/utils/data";
+import { dataCategories } from "@/logic/utils/data";
 import CardWhite from "@/modules/card/CardWhite";
 import React, { useContext, useEffect } from "react";
 import {
@@ -17,18 +17,16 @@ const Table = () => {
   ) as DashboardContextType;
 
   //products
-  const {
-    data: dataProducts,
-    // error: errorProduct,
-    // isLoading: loadingProduct,
-  } = useFetchData<Product[], any>("https://fakestoreapi.com/products");
+  const { data, error, isLoading } = useFetchData<Product[], any>(
+    "https://fakestoreapi.com/products"
+  );
 
-  const { filterProducts } = UseFilterTable({ dataProducts });
+  const { filterProducts } = UseFilterTable({ dataProducts: data });
 
   useEffect(() => {
-    if (!dataProducts) return;
-    setDataCategory(dataCategories(dataProducts));
-  }, [dataProducts]);
+    if (!data) return;
+    setDataCategory(dataCategories(data));
+  }, [data]);
 
   return (
     <CardWhite title="Details">
@@ -48,23 +46,44 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {filterProducts?.map((item) => (
-              <tr className="bg-white border-b" key={item.id}>
-                <th
-                  scope="row"
-                  className="w-3/12 truncate px-6 py-4 font-normal whitespace-normal "
-                >
-                  {item.title}
+            {data &&
+              filterProducts?.map((item) => (
+                <tr className="bg-white border-b" key={item.id}>
+                  <th
+                    scope="row"
+                    className="w-3/12 truncate px-6 py-4 font-normal whitespace-normal "
+                  >
+                    {item.title}
+                  </th>
+                  <td className="w-5/3 truncate px-6 py-4 font-normal whitespace-normal">
+                    {item.description}
+                  </td>
+                  <td className="w-4/3 truncate px-6 py-4 font-normal whitespace-normal">
+                    {item.category}
+                  </td>
+                </tr>
+              ))}
+            {isLoading && (
+              <tr className="bg-gray-100 border-b animate-pulse">
+                <th scope="row" className="w-3/12 bg-white p-2">
+                  <div className="w-10/12 bg-gray-200 h-6"></div>
                 </th>
-                <td className="w-5/3 truncate px-6 py-4 font-normal whitespace-normal">
-                  {item.description}
+                <td className="w-5/12 bg-white p-2">
+                  <div className="w-10/12 bg-gray-200 h-6"></div>
                 </td>
-                <td className="w-4/3 truncate px-6 py-4 font-normal whitespace-normal">
-                  {item.category}
+                <td className="w-4/12 bg-white p-2">
+                  <div className="w-10/12 bg-gray-200 h-6"></div>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
+          {error && (
+            <div className="h-28 grid place-content-center">
+              <h3 className="text-base font-semibold">
+                Error Connection. <span className="font-bold">Reload Page</span>
+              </h3>
+            </div>
+          )}
         </table>
       </div>
     </CardWhite>

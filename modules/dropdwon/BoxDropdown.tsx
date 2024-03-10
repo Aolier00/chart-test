@@ -10,7 +10,7 @@ type Props = {
   open: boolean;
 };
 
-const DropdownCheck = ({ open }: Props) => {
+const BoxDropdown = ({ open }: Props) => {
   const { dataCategory, selectCategory, setSelectCategory } = useContext(
     DashboardContext
   ) as DashboardContextType;
@@ -29,4 +29,4 @@ const DropdownCheck = ({ open }: Props) => {
   );
 };
 
-export default DropdownCheck;
+export default BoxDropdown;

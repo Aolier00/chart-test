@@ -1,88 +1,46 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import CardWhite from "@/modules/card/CardWhite";
-import Chart from "chart.js/auto";
 import { useFetchData } from "@/logic";
-import { cantProductForCategory } from "@/logic/utils/data";
-import { InterfaceChart } from "@/domains/Chart";
 import { Product } from "@/domains/Product";
 import {
   DashboardContext,
   DashboardContextType,
 } from "../context/DashboardContext";
+import UseGrafic from "@/logic/UseGrafic";
 
 const Grafic = () => {
-  const {
-    data: dataProducts,
-    // error: errorProduct,
-    isLoading: loadingProduct,
-  } = useFetchData<Product[], any>("https://fakestoreapi.com/products");
-
-  const [chartInstance, setChartInstance] = useState<Chart<"line"> | null>(
-    null
+  const { data, error, isLoading } = useFetchData<Product[], any>(
+    "https://fakestoreapi.com/products"
   );
-  const [chartData, setChartData] = useState<InterfaceChart | null>(null);
+
   const { selectCategory } = useContext(
     DashboardContext
   ) as DashboardContextType;
 
-  useEffect(() => {
-    if (!dataProducts) return;
-    const data = cantProductForCategory(
-      selectCategory ? selectCategory.value : '',
-      dataProducts
-    );
-    const chartData = {
-      labels: data.map((item) => item.category),
-      datasets: [
-        {
-          label: "Product Quantity",
-          data: data.map((item) => item.quantity),
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-          fill: true,
-        },
-      ],
-    };
-    setChartData(chartData);
-  }, [dataProducts, selectCategory]);
-
-  const chartRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    if ((chartData && !chartRef) || !chartRef.current) return;
-
-    if (chartInstance) {
-      chartInstance.destroy();
-    }
-
-    const ctx = chartRef.current.getContext("2d");
-    const newChartInstance = new Chart(ctx, {
-      type: "line",
-      data: chartData,
-      options: {
-        responsive: true,
-        aspectRatio: 0,
-      },
-    });
-    setChartInstance(newChartInstance);
-    return () => {
-      if (newChartInstance) {
-        newChartInstance.destroy();
-      }
-    };
-  }, [chartData]);
+  const { chartRef } = UseGrafic({ dataProducts: data, selectCategory });
 
   return (
-    <CardWhite title="Product of Quantity">
+    <CardWhite title="Quantity of product by category">
       <div
         style={{
           width: "100%",
+          height: 250,
         }}
       >
-        {loadingProduct && <p>Loading ...</p>}
-        {dataProducts && <canvas ref={chartRef} />}
+        {isLoading && (
+          <div className="animate-pulse flex">
+            <div className="shadow bg-neutral-200 h-28 rounded-md w-full"></div>
+          </div>
+        )}
+        {data && <canvas ref={chartRef} />}
+        {error && (
+          <div className="h-28 grid place-content-center">
+            <h3 className="text-base font-semibold text-neutral-600">
+              Error Connection. <span className="font-bold">Reload Page</span>
+            </h3>
+          </div>
+        )}
       </div>
     </CardWhite>
   );

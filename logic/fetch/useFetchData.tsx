@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const useFetchData = <T, E>(url: string) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<E | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   //   const [reset, setReset] = useState<boolean>(false);
   // Crear una opción de reset para resetear la petición si el usuario quiere
   const fetchData = async () => {
