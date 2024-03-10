@@ -3,7 +3,11 @@
 
 Este proyecto, desarrollado con Node versión 18.17.0, combina React, NextJS, Typescript y Tailwindcss para crear una aplicación web que permite mostrar y filtrar información sobre productos por categorías.
 
-**Comando:**
+**Comandos:**
+```
+npm install
+```
+
 ```
 npm run dev
 ```
